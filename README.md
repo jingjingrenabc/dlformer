@@ -11,17 +11,17 @@ Set model.params.ckpt_path as path of the model（download [here](https://drive.
 python test_transformer_sppe.py -c configs/test_breakdance_transformer.yaml -s save_dir
 ```
 ## Training your own model
-1) Fine tune the autoencoder together with a codebook on current video
+1) Fine tune the autoencoder together with a codebook on current video from pretrained model (download [here](https://drive.google.com/file/d/1KKd5gfVhXMDCZ9Rqf1zDHAxYgMx1W_j6/view?usp=sharing))
 ```
-python train_vqgan.py --base configs/train_breakdance_vqgan.yaml  -t True --gpus 0,
+python train_vqgan.py --base configs/breakdance_vqgan.yaml  -t True --gpus 0,
 ```
-2) Set ckpt_path in train_breakdance_vqgan.yaml as the path of checkpoint produced in 1) , set mode as select, and select the codes used in the current video by running
+2) Set ckpt_path in breakdance_vqgan.yaml as the path of checkpoint produced in 1) , set mode as select, and select the codes used in the current video by running
 ```
-python test_vqgan.py -c configs/train_breakdance_vqgan.yaml -s save_dir
+python test_vqgan.py -c configs/breakdance_vqgan.yaml -s save_dir
 ```
-3) In train_breakdance_transformer.yaml set model.params.first_stage_config.ckpt_path as the path of model produced in 2), model.params.first_stage_config.n_embed as the code selected in 2), model.params.transformer_config.params.vocab_size as the code selected in 2), train the transformer for code inference by running
+3) In train_breakdance_transformer_lepe.yaml set model.params.first_stage_config.ckpt_path as the path of model produced in 2), model.params.first_stage_config.n_embed as the code selected in 2), model.params.transformer_config.params.vocab_size as the code selected in 2), train the transformer for code inference by running
 ```
-python train_transformer.py --base configs/train_breakdance_transformer.yaml  -t True --gpus 0,
+python train_transformer.py --base configs/train_breakdance_transformer_lepe.yaml  -t True --gpus 0,
 ```
 4) Set model.params.ckpt_path in train_breakdance_transformer.yaml as the transformer path obtained in 3) and get the result by running
 ```
