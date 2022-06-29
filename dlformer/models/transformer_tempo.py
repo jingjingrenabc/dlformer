@@ -175,7 +175,6 @@ class Net2NetTransformer(pl.LightningModule):
             callback(k)
             assert x.size(1) <= block_size  # make sure model can see conditioning
             logits, _ = self.transformer(x, mask)
-            print(x.shape, mask.shape, 'in line 178')
             _, residual_ref = self.residual_consis(logits.reshape(x.shape[0], t, h, w, logits.shape[-1]))
             # pluck the logits at the final step and scale by temperature
             logits = logits[:, :, :] / temperature
