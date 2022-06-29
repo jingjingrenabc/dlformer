@@ -4,7 +4,8 @@ model:
   params:
     embed_dim: 256
     n_embed: 8192
-    ckpt_path: /home/ubuntu/Workspace/abc/dlformer_demo_pkg/dlformer_demo/data/coco_models.ckpt
+    ckpt_path: dir of pretrained coco_models
+    mode: train
     ddconfig:
       double_z: false
       z_channels: 256
