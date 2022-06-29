@@ -1,0 +1,61 @@
+model:
+  base_learning_rate: 4.5e-06
+  target: dlformer.models.transformer_tempo.Net2NetTransformer
+  params:
+    ckpt_path: logs/2022-06-11T00-49-50_train_breakdance_transformer_lepe/checkpoints/transformer.ckpt
+    cond_stage_key: coord
+    transformer_config:
+      target: dlformer.modules.transformer.mingpt_allatt_hole_tempo_spatt_sppe.GPT
+      params:
+        vocab_size: 514       # the number of code in current video
+        block_size: 1215
+        n_layer: 24
+        n_head: 16
+        n_embd: 512
+    first_stage_config:
+      target: dlformer.models.vqgan_vi_coco.VQModel
+      params:
+        ckpt_path: logs/2022-05-11T03-15-55_breakdance_vqgan/checkpoints/last_select.ckpt
+        mode: eval
+        embed_dim: 256
+        n_embed: 514        # the number of code in current video
+        ddconfig:
+          double_z: false
+          z_channels: 256
+          resolution: 240
+          in_channels: 3
+          out_ch: 3
+          ch: 128
+          ch_mult:
+          - 1
+          - 1
+          - 2
+          - 2
+          - 4
+          num_res_blocks: 2
+          attn_resolutions:
+          - 15
+          dropout: 0.0
+        lossconfig:
+          target: dlformer.modules.losses.vqperceptual_vi.DummyLoss
+data:
+  target: utils.DataModuleFromConfig
+  params:
+    batch_size: 2
+    num_workers: 8
+    train:
+      target: dlformer.data.custom_vi_trans_sudomask_tempo.CustomTrain
+      params:
+        training_images_list_file: data/txt_files/breakdance.txt
+        training_mask_file: data/txt_files/breakdance_mask.txt
+        h: 240
+        w: 432
+        tl: 1
+    validation:
+      target: dlformer.data.custom_vi_trans_sudomask_tempo.CustomTest
+      params:
+        test_images_list_file: data/txt_files/breakdance.txt
+        test_mask_file: data/txt_files/breakdance_mask.txt
+        h: 240
+        w: 432
+        tl: 1
